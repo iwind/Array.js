@@ -21,7 +21,7 @@ arr.$each(function (k, v) {
 * $fill(value, length)
 
 ###删
-* $removeValue(v)
+* $removeValue(v) - 从数组中删除某个值
 * $remove(index)
 * $clear()
 * $push(value1, value2, ...)
@@ -38,7 +38,7 @@ arr.$each(function (k, v) {
 
 ###查
 * $contains(v) / $include(v) - 判断数组中是否包含某个值
-* $each(fn)
+* $each(fn) 
 * $get(index)
 * $first()
 * $last()
