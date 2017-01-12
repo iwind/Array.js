@@ -7,6 +7,14 @@
 <script type="text/javascript" src="Array.min.js"></script> 
 ~~~
 
+然后：
+~~~javascript
+var arr = [ 1, 2, 3, 4];
+arr.$each(function (k, v) {
+	console.log(v);
+});
+~~~
+
 ##API
 ###增
 * $pad(value, size)
