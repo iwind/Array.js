@@ -22,10 +22,10 @@ arr.$each(function (k, v) {
 
 ###删
 * $removeValue(v) - 从数组中删除某个值
-* $remove(index)
-* $clear()
-* $push(value1, value2, ...)
-* $pushAll(array2)
+* $remove(index) - 从数组中删除某个位置上的值
+* $clear() - 清空数组
+* $push(value1, value2, ...) - 在尾部加入一个或多个元素
+* $pushAll(array2) - 一次性加入多个元素
 
 ###改
 * $unique(fn)
