@@ -17,7 +17,7 @@ arr.$each(function (k, v) {
 
 ##API
 ###增
-* $pad(value, size)
+* $pad(value, size) 
 * $fill(value, length)
 
 ###删
@@ -37,7 +37,7 @@ arr.$each(function (k, v) {
 * $shuffle()
 
 ###查
-* $contains(v) / $include(v)
+* $contains(v) / $include(v) - 判断数组中是否包含某个值
 * $each(fn)
 * $get(index)
 * $first()
