@@ -311,28 +311,31 @@ Array.prototype.$collect = function (fn) {
 
 /**
  * 对容器中元素应用迭代器,只要有一次返回值即立即返回由当前元素的索引
- *
- * 如果没有找到则返回-1
  */
 Array.prototype.$find = function (fn) {
 	var that = this;
 	if (that == null) {
 		return -1;
 	}
+	if (typeof(fn) == "undefined") {
+		return that.$get(0);
+	}
 	var index = -1;
+	var result = null;
 	that.$each(function (k, v) {
 		if (index > -1) {
 			return;
 		}
 		if (fn.call(that, k, v)) {
 			index = k;
+			result = v;
 		}
 	});
-	return index;
+	return result;
 };
 
 /**
- * 对容器中元素应用迭代器,将所有返回真的索引放入一数组中
+ * 对容器中元素应用迭代器,将所有返回真的元素放入一数组中
  */
 Array.prototype.$findAll = function (fn) {
 	var that = this;
@@ -342,7 +345,7 @@ Array.prototype.$findAll = function (fn) {
 	var result = [];
 	that.$each(function (k, v) {
 		if (fn.call(that, k, v)) {
-			result.push(k);
+			result.push(v);
 		}
 	});
 	return result;
@@ -360,7 +363,7 @@ Array.prototype.$filter = function (fn) {
 };
 
 /**
- * 对容器中元素应用迭代器,将所有返回假的索引放入一数组中
+ * 对容器中元素应用迭代器,将所有返回假的元素放入一数组中
  */
 Array.prototype.$reject = function (fn) {
 	var that = this;
@@ -370,14 +373,14 @@ Array.prototype.$reject = function (fn) {
 	var result = [];
 	that.$each(function (k, v) {
 		if (!fn.call(that, k, v)) {
-			result.push(k);
+			result.push(v);
 		}
 	});
 	return result;
 };
 
 /**
- * 找出匹配某正则表达式的元素，返回索引数组
+ * 找出匹配某正则表达式的元素，返回匹配的元素数组
  */
 Array.prototype.$grep = function (pattern) {
 	var that = this;
