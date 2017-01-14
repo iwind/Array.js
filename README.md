@@ -1,5 +1,5 @@
 #Array.js
-帮助开发人员更好地操作Javascript数组。
+**Array.js**帮助开发人员更优雅地操作Javascript数组。
 
 ##使用
 直接引入 *Array.js* 或 *Array.min.js*：
