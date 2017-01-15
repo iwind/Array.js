@@ -89,7 +89,7 @@ Array.prototype.$removeValue = function (v) {
 		}
 	}
 	that.$clear();
-	for (var i = 0; i < newArray.length; i++) {
+	for (i = 0; i < newArray.length; i++) {
 		that.push(newArray[i]);
 	}
 	return true;
@@ -110,7 +110,7 @@ Array.prototype.$remove = function (index) {
 		}
 	}
 	that.$clear();
-	for (var i = 0; i < newArray.length; i++) {
+	for (i = 0; i < newArray.length; i++) {
 		that.push(newArray[i]);
 	}
 	return true;
@@ -125,11 +125,10 @@ Array.prototype.$clear = function () {
 		return true;
 	}
 
-	var length = that.length;
-	for (var i = 0; i < length; i++) {
-		that.pop();
+	if (that.length == 0) {
+		return true;
 	}
-
+	that.splice(0, that.length);
 	return true;
 };
 
@@ -342,6 +341,9 @@ Array.prototype.$findAll = function (fn) {
 	if (that == null) {
 		return [];
 	}
+	if (typeof(fn) == "undefined") {
+		return that.copy();
+	}
 	var result = [];
 	that.$each(function (k, v) {
 		if (fn.call(that, k, v)) {
@@ -368,6 +370,9 @@ Array.prototype.$filter = function (fn) {
 Array.prototype.$reject = function (fn) {
 	var that = this;
 	if (that == null) {
+		return [];
+	}
+	if (typeof(fn) == "undefined") {
 		return [];
 	}
 	var result = [];
@@ -403,6 +408,9 @@ Array.prototype.$keys = function (value, strict) {
 	if (that == null) {
 		return [];
 	}
+	if (arguments.length == 0) {
+		return Array.$range(0, that.length - 1);
+	}
 	var keys = [];
 	if (typeof(strict) == "undefined") {
 		strict = false;
@@ -422,6 +430,9 @@ Array.prototype.$indexesOf = function (value, strict) {
 	var that = this;
 	if (that == null) {
 		return [];
+	}
+	if (arguments.length == 0) {
+		return Array.$range(0, that.length - 1);
 	}
 	return that.$keys(value, strict);
 };
@@ -485,7 +496,7 @@ Array.prototype.$asort = function (sortFunction) {
 			return 0;
 		};
 	}
-	for (var i = 0; i < that.length; i ++) {
+	for (i = 0; i < that.length; i ++) {
 		for (var j = 0; j < that.length; j ++) {
 			if (j > 0 && sortFunction(that[j-1], that[j]) > 0) {
 				that.$swap(j, j - 1);
@@ -866,4 +877,11 @@ Array.$range = function (start, end, step) {
 		}
 	}
 	return array;
+};
+
+/**
+ * 判断一个对象是否为数组
+ */
+Array.$isArray = function(obj) {
+	return Object.prototype.toString.call(obj) === "[object Array]";
 };
