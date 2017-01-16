@@ -19,13 +19,13 @@ arr.$each(function (k, v) {
 ###增
 * `<boolean> $pad(value, size)` - 填充数组 [\[示例\]](#pad)
 * `<boolean> $fill(value, length)` - 填充数组到一定长度 [\[示例\]](#fill)
+* `<number> $push(value1, value2, ...)` - 在尾部加入一个或多个元素 [\[示例\]](#push)
+* `<number> $pushAll(array2)` - 一次性加入多个元素 [\[示例\]](#pushall)
 
 ###删
 * `<boolean> $removeValue(v)` - 从数组中删除某个值 [\[示例\]](#removevalue)
 * `<boolean> $remove(index)` - 从数组中删除某个位置上的值 [\[示例\]](#remove)
 * `<boolean> $clear()` - 清空数组 [\[示例\]](#clear)
-* `<number> $push(value1, value2, ...)` - 在尾部加入一个或多个元素 [\[示例\]](#push)
-* `<number> $pushAll(array2)` - 一次性加入多个元素 [\[示例\]](#pushall)
 
 ###改
 * `<boolean> $unique(fn)` - 去除数组中的相同数据 [\[示例\]](#unique)
@@ -119,6 +119,25 @@ var arr = [1, 2, 3];
 arr.$fill("a", 5); // arr => [1, 2, 3, "a", "a"]
 ~~~
 
+###$push
+* `<number> $push(value1, value2, ...)` - 在尾部加入一个或多个元素
+
+示例代码1：
+~~~javascript
+var arr = [1, 2, 3];
+arr.$push(4); // arr => [1, 2, 3, 4]
+arr.$push(5, 6, 7, 8); // arr => [1, 2, 3, 4, 5, 6, 7, 8]
+~~~
+
+###$pushAll
+* `<number> $pushAll(array2)` - 一次性加入多个元素
+
+示例代码1： 
+~~~javascript
+var arr = [1, 2, 3];
+arr.$pushAll([4, 5, 6]); // arr => [1, 2, 3, 4, 5, 6]
+~~~
+
 ###$removeValue
 * `<boolean> $removeValue(v)` - 从数组中删除某个值
 
@@ -144,25 +163,6 @@ arr.$remove(2); // arr => [1, 2, 4, 5]
 ~~~javascript
 var arr = [1, 2, 3];
 arr.$clear(); // arr => []
-~~~
-
-###$push
-* `<number> $push(value1, value2, ...)` - 在尾部加入一个或多个元素
-
-示例代码1：
-~~~javascript
-var arr = [1, 2, 3];
-arr.$push(4); // arr => [1, 2, 3, 4]
-arr.$push(5, 6, 7, 8); // arr => [1, 2, 3, 4, 5, 6, 7, 8]
-~~~
-
-###$pushAll
-* `<number> $pushAll(array2)` - 一次性加入多个元素
-
-示例代码1： 
-~~~javascript
-var arr = [1, 2, 3];
-arr.$pushAll([4, 5, 6]); // arr => [1, 2, 3, 4, 5, 6]
 ~~~
 
 ###$unique

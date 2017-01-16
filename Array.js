@@ -22,13 +22,13 @@
  * - $reject(fn)
  * - $grep(pattern)
  * - $keys(value, strict) / $indexesOf(value, strict)
- * - $sort(fn)
- * - $rsort(fn)
- * - $arsort(fn)
+ * - $sort(compare)
+ * - $rsort(compare)
+ * - $arsort(compare)
  * - $diff(array2)
  * - $intersect(array2)
- * - $max(fn)
- * - $min(fn)
+ * - $max(compare)
+ * - $min(compare)
  * - $swap(index1, index2)
  * - $sum(fn)
  * - $product(fn)
@@ -43,6 +43,7 @@
  * - $desc(field)
  * - $asJSON(field)
  * - Array.$range(start, end, step)
+ * - Array.$isArray(obj)
  *
  * @author 刘祥超 <iwind.liu@gmail.com>
  */
