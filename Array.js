@@ -4,6 +4,9 @@
  * - $contains(v) / $include(v)
  * - $removeValue(v)
  * - $remove(index)
+ * - $removeIf(fn)
+ * - $keepIf(fn)
+ * - $replace(newValues)
  * - $clear()
  * - $each(fn)
  * - $unique(fn)
@@ -92,9 +95,7 @@ Array.prototype.$removeValue = function (v) {
 		}
 	}
 	that.$clear();
-	for (i = 0; i < newArray.length; i++) {
-		that.push(newArray[i]);
-	}
+	that.$pushAll(newArray);
 	return true;
 };
 
@@ -106,16 +107,54 @@ Array.prototype.$remove = function (index) {
 	if (that == null) {
 		return true;
 	}
-	var newArray = [];
-	for (var i = 0; i < that.length; i++) {
-		if (i != index) {
-			newArray.push(that[i]);
-		}
+	that.splice(index, 1);
+	return true;
+};
+
+/**
+ * 删除所有满足条件的元素，并返回删除的元素的个数
+ */
+Array.prototype.$removeIf = function (fn) {
+	var that = this;
+	if (that == null) {
+		return 0;
 	}
-	that.$clear();
-	for (i = 0; i < newArray.length; i++) {
-		that.push(newArray[i]);
+
+	var oldLength = that.length;
+	var left = that.$reject(fn);
+	that.$replace(left);
+	return oldLength - that.length;
+};
+
+/**
+ * 保留所有满足条件的元素，删除不满足条件的元素
+ */
+Array.prototype.$keepIf = function (fn) {
+	var that = this;
+	if (that == null) {
+		return 0;
 	}
+
+	var oldLength = that.length;
+	var left = that.$findAll(fn);
+	that.$replace(left);
+	return oldLength - that.length;
+};
+
+/**
+ * 将当前数组的元素替换成新的数组中的元素
+ */
+Array.prototype.$replace = function (newValues) {
+	var that = this;
+	if (that == null) {
+		return false;
+	}
+	if (!Array.isArray(newValues)) {
+		return false;
+	}
+
+	that.splice.apply(that, [0, that.length].concat(newValues));
+
 	return true;
 };
 

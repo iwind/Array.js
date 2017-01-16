@@ -26,6 +26,9 @@ arr.$each(function (k, v) {
 ###删
 * `<boolean> $removeValue(v)` - 从数组中删除某个值 [\[示例\]](#removevalue)
 * `<boolean> $remove(index)` - 从数组中删除某个位置上的值 [\[示例\]](#remove)
+* `<number> $removeIf(fn)` - 删除所有满足条件的元素 [\[示例\]](#removeif)
+* `<number> $keepIf(fn)` - 保留所有满足条件的元素，删除不满足条件的元素 [\[示例\]](#keepif)
+* `<boolean> $replace(newValues)` - 将当前数组的元素替换成新的数组中的元素 [\[示例\]](#replace)
 * `<boolean> $clear()` - 清空数组 [\[示例\]](#clear)
 
 ###改
@@ -171,12 +174,62 @@ arr.$removeValue(2); // arr => [1, 3, 3, 3]
 ~~~
 
 ###$remove
-* `<boolean> $remove(index)` - 从数组中删除某个位置上的值
+* `<boolean> $remove(index)` - 从数组中删除某个位置上的值，index支持负值
 
 示例代码1：
 ~~~javascript
 var arr = [1, 2, 3, 4, 5];
 arr.$remove(2); // arr => [1, 2, 4, 5]
+~~~
+
+示例代码2：
+~~~javascript
+var arr = [1, 2, 3, 4, 5];
+arr.$remove(-2); // arr => [1, 2, 3, 5]
+~~~
+
+###$removeIf
+* `<number> $removeIf(fn)` - 删除所有满足条件的元素，并返回删除的元素的个数
+
+示例代码1：
+~~~javascript
+var arr = [ 1, 2, 3, 4, 5];
+arr.$removeIf(function (k, v) {
+	return (v >= 3);
+});
+// arr => [1, 2]
+~~~
+
+示例代码2：
+~~~javascript
+var arr = [ 1, 2, 3, 4, 5];
+arr.$removeIf(function (k, v) {
+	return true;
+});
+// arr => []
+~~~
+
+###$keepIf
+* `<number> $keepIf(fn)` - 保留所有满足条件的元素，删除不满足条件的元素，并返回删除的元素的个数
+
+示例代码1：
+~~~javascript
+var arr = [ 1, 2, 3, 4, 5];
+arr.$keepIf(function (k, v) {
+	return (v >= 3);
+})
+// arr => [3, 4, 5]
+~~~
+
+###$replace
+* `<boolean> $replace(newValues)` - 将当前数组的元素替换成新的数组中的元素
+
+示例代码1：
+~~~javascript
+var arr = [ 1, 2, 3, 4, 5];
+arr.$replace(); // arr => [1, 2, 3, 4, 5]
+arr.$replace([]); // arr => []
+arr.$replace(["a", "b", "c"]); // arr => ["a", "b", "c"]
 ~~~
 
 ###$clear
