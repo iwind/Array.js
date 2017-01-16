@@ -176,7 +176,7 @@ Array.prototype.$unique = function (fn) {
 	for (var i = 0; i < indexes.length; i++) {
 		that.push(copy[indexes[i]]);
 	}
-	return that;
+	return true;
 };
 
 /**
