@@ -21,6 +21,7 @@ arr.$each(function (k, v) {
 * `<boolean> $fill(value, length)` - 填充数组到一定长度 [\[示例\]](#fill)
 * `<number> $push(value1, value2, ...)` - 在尾部加入一个或多个元素 [\[示例\]](#push)
 * `<number> $pushAll(array2)` - 一次性加入多个元素 [\[示例\]](#pushall)
+* `<boolean> $insert(index, obj1, ...)` - 在指定位置插入新的元素 [\[示例\]](#insert)
 
 ###删
 * `<boolean> $removeValue(v)` - 从数组中删除某个值 [\[示例\]](#removevalue)
@@ -43,6 +44,7 @@ arr.$each(function (k, v) {
 * `<boolean> $contains(v)` / `<boolean> $include(v)` - 判断数组中是否包含某个值 [\[示例\]](#contains)
 * `<boolean> $each(fn)` - 遍历数组 [\[示例\]](#each)
 * `<mixed> $get(index)` - 获取某个索引位置上的值 [\[示例\]](#get)
+* `<array> $getAll(index1, indexes1, ...)` - 获取一组索引对应的值 [\[示例\]](#getall)
 * `<mixed> $first()` - 取得第一个元素值 [\[示例\]](#first)
 * `<mixed> $last()` - 取得第一个元素值 [\[示例\]](#last)
 * `<boolean> $isEmpty()` - 判断数组是否为空 [\[示例\]](#isempty)
@@ -79,7 +81,7 @@ var has = [1, 2, 3, 4].$any(function (k, v) {
 ~~~
 
 ##排序迭代器
-在`$sort`、`$asc`、`$min`、`$max`等等需要排序的API中，参数中的`fn`表示迭代器，每个迭代器接收两个参数：`v1`（第一个值）、`v2`（第二个值），`this`指向数组本身：
+在`$sort`、`$rsort`、`$min`、`$max`等需要排序的API中，参数中的`compare`表示迭代器，每个迭代器接收两个参数：`v1`（第一个值）、`v2`（第二个值），`this`指向数组本身：
 ~~~javascript
 var arr = [3, 2, 4, 1];
 arr.$sort(function (v1, v2) {
@@ -136,6 +138,27 @@ arr.$push(5, 6, 7, 8); // arr => [1, 2, 3, 4, 5, 6, 7, 8]
 ~~~javascript
 var arr = [1, 2, 3];
 arr.$pushAll([4, 5, 6]); // arr => [1, 2, 3, 4, 5, 6]
+~~~
+
+###$insert
+* `<boolean> $insert(index, obj1, ...)` - 在指定位置插入新的元素，`index`参数支持负值
+
+示例代码1：
+~~~javascript
+var arr = [1, 2, 3];
+arr.$insert(0, "a", "b", "c"); // arr => ["a", "b", "c", 1, 2, 3]
+~~~
+
+示例代码2：
+~~~javascript
+var arr = [1, 2, 3, 4, 5];
+arr.$insert(2, "a", "b", "c"); // arr => [1, 2, "a", "b", "c", 3, 4, 5]
+~~~
+
+示例代码3：
+~~~javascript
+var arr = [1, 2, 3, 4, 5];
+arr.$insert(-2, "a", "b", "c"); // => [1, 2, 3, 4, "a", "b", "c", 5]
 ~~~
 
 ###$removeValue
@@ -323,6 +346,18 @@ index:2 v:3
 [1, 2, 3].$get(0); // => 1
 [1, 2, 3].$get(2); // => 3
 [].$get(0); // => null
+~~~
+
+###$getAll
+* `<array> $getAll(index1, indexes1, ...)` - 获取一组索引对应的值，如果超出索引范围，则不返回数据
+
+示例代码1：
+~~~javascript
+var arr = [1, 2, 3, 4, 5];
+var newArr = arr.$getAll(); // newArr => []
+newArr = arr.$getAll(0, 2, 4); // newArr => [1, 3, 5]
+newArr = arr.$getAll(0, 2, 4, 6, 8); // newArr => [1, 3, 5] 因为6和8超出索引范围
+newArr = arr.$getAll(0, 2, [3, 4]); // newArr => [1, 3, 4, 5]
 ~~~
 
 ###$first

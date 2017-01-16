@@ -8,6 +8,7 @@
  * - $each(fn)
  * - $unique(fn)
  * - $get(index)
+ * - $getAll(index1, index2, ...) / $getAll(indexes1, indexes2, ...)
  * - $first()
  * - $last()
  * - $set(index, value)
@@ -39,6 +40,7 @@
  * - $size() / $count()
  * - $push(value1, value2, ...)
  * - $pushAll(array2)
+ * - $insert(index, obj1, ...)
  * - $asc(field)
  * - $desc(field)
  * - $asJSON(field)
@@ -192,6 +194,35 @@ Array.prototype.$get = function (index) {
 		return null;
 	}
 	return that[index];
+};
+
+/**
+ * 获取一组索引对应的值
+ *
+ * 如果超出索引范围，则不返回数据
+ */
+Array.prototype.$getAll = function (index1) {
+	var that = this;
+	if (that == null) {
+		return [];
+	}
+	var values = [];
+	for (var i = 0; i < arguments.length; i ++) {
+		var arg = arguments[i];
+		if (Array.$isArray(arg)) {
+			values.$pushAll(that.$getAll.apply(that, arg));
+		}
+		else if (typeof(arg) == "number" && arg < that.length) {
+			values.$push(that.$get(arg));
+		}
+		else if (typeof(arg) == "string" && /^\\d+$/.test(arg)) {
+			arg = parseInt(arg);
+			if (arg < that.length) {
+				values.$push(that.$get(arg));
+			}
+		}
+	}
+	return values;
 };
 
 /**
@@ -804,6 +835,33 @@ Array.prototype.$pushAll = function (array2) {
 		return 0;
 	}
 	return Array.prototype.push.apply(that, array2);
+};
+
+/**
+ * 在指定位置插入新的元素
+ */
+Array.prototype.$insert = function (index, obj1) {
+	var that = this;
+	if (that == null) {
+		return false;
+	}
+
+	var args = [];
+	if (arguments.length == 0) {
+		return false;
+	}
+
+	for (var i  = 1; i < arguments.length; i ++) {
+		args.push(arguments[i]);
+	}
+
+	if (index < 0) {
+		index = that.length + index + 1;
+	}
+
+	that.splice.apply(that, [index, 0].concat(args));
+
+	return true;
 };
 
 /**
