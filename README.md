@@ -30,10 +30,10 @@ arr.$each(function (k, v) {
 ###改
 * `<boolean> $unique(fn)` - 去除数组中的相同数据
 * `<boolean> $set(index, value)` - 设置某个索引位置上的值
-* `<boolean> $sort(fn)` - 对该数组进行正排序
-* `<boolean> $rsort(fn)` - 对该数组进行倒排序
-* `<array> $asort(fn)` - 对该数组进行正排序，并返回排序后对应的索引
-* `<array> $arsort(fn)` - 对该数组进行倒排序，并返回排序后对应的索引
+* `<boolean> $sort(compare)` - 对该数组进行正排序
+* `<boolean> $rsort(compare)` - 对该数组进行倒排序
+* `<array> $asort(compare)` - 对该数组进行正排序，并返回排序后对应的索引
+* `<array> $arsort(compare)` - 对该数组进行倒排序，并返回排序后对应的索引
 * `<boolean> $asc(field)` - 依据单个字段进行正排序
 * `<boolean> $desc(field)` - 依据单个字段进行倒排序
 * `<boolean> $swap(index1, index2)` - 交换数组的两个索引对应的值
@@ -57,8 +57,8 @@ arr.$each(function (k, v) {
 * `<array> $keys(value, strict)` / `<array> $indexesOf(value, strict)` - 取得某一个值在数组中出现的所有的键的集合
 * `<array> $diff(array2)` - 取当前数组与另一数组的差集
 * `<array> $intersect(array2)` - 取当前数组与另一数组的交集
-* `<mixed> $max(fn)` - 取得当前集合中最大的一个值
-* `<mixed> $min(fn)` - 取得当前集合中最小的一个值
+* `<mixed> $max(compare)` - 取得当前集合中最大的一个值
+* `<mixed> $min(compare)` - 取得当前集合中最小的一个值
 * `<number> $sum(fn)` - 计算数组中的所有元素的总和
 * `<number> $product(fn)` - 计算数组中的所有元素的乘积
 * `<array> $rand(size)` - 随机截取数组片段
@@ -185,7 +185,7 @@ arr.$set(4, "a"); // arr不变，因为4已经超出数组长度
 ~~~
 
 ###$sort
-* `<boolean> $sort(fn)` - 对该数组进行正排序
+* `<boolean> $sort(compare)` - 对该数组进行正排序
 
 示例代码1：
 ~~~javascript
@@ -215,113 +215,404 @@ arr.$sort(function (v1, v2) {
 ~~~
 
 ###$rsort
-* `<boolean> $rsort(fn)` - 对该数组进行倒排序
+* `<boolean> $rsort(compare)` - 对该数组进行倒排序
 
-示例代码同`$sort(fn)`，只不过把顺序倒过来。
+示例代码同`$sort(compare)`，只不过把顺序倒过来。
 
 ###$asort
-* `<array> $asort(fn)` - 对该数组进行正排序，并返回排序后对应的索引
+* `<array> $asort(compare)` - 对该数组进行正排序，并返回排序后对应的索引
 
 ###$arsort
-* `<array> $arsort(fn)` - 对该数组进行倒排序，并返回排序后对应的索引
+* `<array> $arsort(compare)` - 对该数组进行倒排序，并返回排序后对应的索引
 
 ###$asc
 * `<boolean> $asc(field)` - 依据单个字段进行正排序
 
+示例代码1：
+~~~javascript
+var arr = [
+    { "name": "Libai", "age": 24 },
+    { "name": "Zhangsan", "age": 22 },
+    { "name": "Wanger", "age": 23 }
+];
+arr.$asc("age");
+~~~
+此时的`arr`变成：
+~~~json
+[
+	{ "name": "Zhangsan", "age": 22 },
+	{ "name": "Wanger", "age": 23 },
+    { "name": "Libai", "age": 24 }
+]
+~~~
+
 ###$desc
 * `<boolean> $desc(field)` - 依据单个字段进行倒排序
+
+示例代码1：
+~~~javascript
+var arr = [
+    { "name": "Libai", "age": 24 },
+    { "name": "Zhangsan", "age": 22 },
+    { "name": "Wanger", "age": 23 }
+];
+arr.$desc("age");
+~~~
+此时的`arr`变成：
+~~~json
+[
+    { "name": "Libai", "age": 24 },
+    { "name": "Wanger", "age": 23 },
+    { "name": "Zhangsan", "age": 22 }
+]
+~~~
 
 ###$swap
 * `<boolean> $swap(index1, index2)` - 交换数组的两个索引对应的值
 
+示例代码1：
+~~~javascript
+arr = [1, 2, 3];
+arr.$swap(0, 2); // arr => [3, 2, 1]
+~~~
+
 ###$shuffle
 * `<boolean> $shuffle()` - 打乱数组中元素顺序
 
+示例代码1：
+~~~javascript
+var arr = [1, 2, 3];
+arr.$shuffle();  // arr => [2, 3, 1]
+arr.$shuffle();  // arr => [1, 3, 2]
+~~~
+
 ###$contains
-* `<boolean> $contains(v)`
+* `<boolean> $contains(v)` - 判断数组中是否包含某个值
+
+示例代码1：
+~~~javascript
+[1, 2, 3].$contains(3); // => true
+[1, 2, 3].$contains(4); // => false
+[1, 2, 3].$contains(null); // => false
+~~~
  
 ### $include
-* `<boolean> $include(v)` - 判断数组中是否包含某个值
+* `<boolean> $include(v)` - 同`$contains(v)`作用一致
 
 ###$each
 * `<boolean> $each(fn)` - 遍历数组
 
+示例代码1：
+~~~javascript
+[1, 2, 3].$each(function (k, v) {
+	console.log( "index:" + k + " v:" + v );
+});
+~~~
+输出：
+~~~
+index:0 v:1
+index:1 v:2
+index:2 v:3
+~~~
+
 ###$get
 * `<mixed> $get(index)` - 获取某个索引位置上的值
+
+示例代码1：
+~~~javascript
+[1, 2, 3].$get(0); // => 1
+[1, 2, 3].$get(2); // => 3
+[].$get(0); // => null
+~~~
 
 ###$first
 * `<mixed> $first()` - 取得第一个元素值
 
+示例代码1：
+~~~javascript
+[1, 2, 3].$first(); // => 1
+[].$first(); // => null
+~~~
+
 ###$last
 * `<mixed> $last()` - 取得第一个元素值
+
+示例代码1：
+~~~javascript
+[1, 2, 3].$last(); // => 3
+[].$last(); // => null
+~~~
 
 ###$isEmpty
 * `<boolean> $isEmpty()` - 判断数组是否为空
 
+示例代码1： 
+~~~javascript
+[1, 2, 3].$isEmpty(); // => false
+[].$isEmpty(); // => true
+~~~
+
 ###$all
 * `<boolean> $all(fn)` - 对容器中元素应用迭代器,并判断是否全部返回真
+
+示例代码1：
+~~~javascript
+[1, 2, 3].$all(function (k, v) {
+	return v > 1;
+});
+// => false
+~~~
+
+示例代码2：
+~~~javascript
+[1, 2, 3].$all(function (k, v) {
+	return v > 0;
+});
+// => true
+~~~
 
 ###$any
 * `<boolean> $any(fn)` - 对容器中元素应用迭代器,并判断是否有一次返回真
 
+示例代码1：
+~~~javascript
+[1, 2, 3].$any(function (k, v) {
+	return v > 3;
+});
+// => false
+~~~
+
+示例代码2：
+~~~javascript
+[1, 2, 3, 4, 5].$any(function (k, v) {
+	return v > 3;
+});
+// => true
+~~~
+
 ###$map
-* `<array> $map(fn)` 
+* `<array> $map(fn)` - 对容器中元素应用迭代器,并将每次执行的结果放入一新数组中
+
+示例代码1：
+~~~javascript
+[1, 2, 3].$map(function (k, v) {
+	return v * v;
+});
+// => [1, 4, 9]
+~~~
 
 ###$collect
-* `$collect(fn)` - 对容器中元素应用迭代器,并将每次执行的结果放入一新数组中
+* `$collect(fn)` - 同`$map(fn)`作用一致
 
 ###$reduce
 * `<mixed> $reduce(fn)` - 对容器中元素应用迭代器,并将每次执行的结果放入到下一次迭代的参数中
 
+示例代码1：
+~~~javascript
+[1, 2, 3, 4, 5].$reduce(function (k, v, result) {
+	return result + v;
+});
+// => 15
+~~~
+
+示例代码2：
+~~~javascript
+[1, 2, 3, 4, 5].$reduce(function (k, v, result) {
+	if (result == 0) {
+		result = 1;
+    }
+	return result * v;
+});
+// => 120
+~~~
+
 ###$find
 * `<mixed> $find(fn)` - 对容器中元素应用迭代器,只要有一次返回值即立即返回由当前元素
 
+示例代码1：
+~~~javascript
+[1, 2, 3].$find(); // => 1 取第一个
+~~~
+
+示例代码2：
+~~~javascript
+[1, 2, 3].$find(function (k, v) {
+	return (v > 1);
+});
+// => 2
+~~~
+
 ###$findAll
-* `<array> $findAll(fn)` 
+* `<array> $findAll(fn)` - 对容器中元素应用迭代器,将所有返回真的元素放入一数组
+
+示例代码1：
+~~~javascript
+[1, 2, 3, 4, 5].$findAll(function (k, v) {
+	return (v > 3);
+});
+// => [4, 5]
+~~~
 
 ###$filter
-`<array> $filter(fn)` - 对容器中元素应用迭代器,将所有返回真的元素放入一数组中
+`<array> $filter(fn)` - 同`$findAll(fn)`作用一致
 
 ###$reject
 * `<array> $reject(fn)` - 对容器中元素应用迭代器,将所有返回假的元素放入一数组中
 
+示例代码1：
+~~~javascript
+[1, 2, 3, 4, 5].$reject(function (k, v) {
+	return (v > 3);
+});
+// => [1, 2, 3]
+~~~
+
 ###$grep
 * `<array> $grep(pattern)` - 找出匹配某正则表达式的元素，并放入一数组中
 
+示例代码1：
+~~~javascript
+["a", "b", "c", 10, "11"].$grep(/\d+/); // => [10, "11"]
+~~~
+
 ###$keys
-* `<array> $keys(value, strict)` 
+* `<array> $keys(value, strict)` - 同`$indexesOf(value, strict)`
+
 
 ###$indexesOf
 * `<array> $indexesOf(value, strict)` - 取得某一个值在数组中出现的所有的键的集合
 
+示例代码1：
+~~~javascript
+[1, "2", 3].$indexesOf(2); // => [1]
+[1, "2", 3].$indexesOf(2, true); // => [] 因为"2"和2的数据类型不同
+~~~
+
 ###$diff
 * `<array> $diff(array2)` - 取当前数组与另一数组的差集
+
+示例代码1：
+~~~javascript
+[1, 2, 3, 4, 5].$diff([2, 3, 4, 6]); // => [1, 5] 注意"6"并不在其中
+~~~
 
 ###$intersect
 * `<array> $intersect(array2)` - 取当前数组与另一数组的交集
 
+示例代码1：
+~~~javascript
+[1, 2, 3].$intersect([2, 3, 4]); // => [2, 3]
+~~~
+
 ###$max
-* `<mixed> $max(fn)` - 取得当前集合中最大的一个值
+* `<mixed> $max(compare)` - 取得当前集合中最大的一个值
+
+示例代码1：
+~~~
+[1, 2, 3].$max(); // => 3
+~~~
+
+示例代码2：
+~~~javascript
+[1, 2, 3].$max(function (v1, v2) {
+	return v2 - v1;
+}); 
+// => 1
+~~~
 
 ###$min
-* `<mixed> $min(fn)` - 取得当前集合中最小的一个值
+* `<mixed> $min(compare)` - 取得当前集合中最小的一个值
+
+示例代码1：
+~~~
+[1, 2, 3].$min(); // => 1
+~~~
+
+示例代码2：
+~~~javascript
+[1, 2, 3].$min(function (v1, v2) {
+	return v2 - v1;
+}); 
+// => 3
+~~~
 
 ###$sum
 * `<number> $sum(fn)` - 计算数组中的所有元素的总和
 
+示例代码1：
+~~~javascript
+[1, 2, 3].$sum(); // => 6
+[1, 2, 3, 4].$sum(); // => 10 
+~~~
+
 ###$product
 * `<number> $product(fn)` - 计算数组中的所有元素的乘积
 
+示例代码1：
+~~~javascript
+[1, 2, 3].$product(); // => 6
+[1, 2, 3, 4].$product(); // => 24
+[1, 2, 3, 4, 5].$product(); // => 120
+~~~
+
 ###$rand
-* `<array> $rand(size)` - 随机截取数组片段
+* `<array> $rand(size)` - 随机截取数组片段，size默认为1
+
+示例代码1： 
+~~~javascript
+var arr = [1, 2, 3, 4];
+newArr = arr.$rand(); // arr不变，newArr => [3]
+newArr = arr.$rand(); // arr不变，newArr => [2]
+newArr = arr.$rand(); // arr不变，newArr => [4]
+newArr = arr.$rand(2); // arr不变，newArr => [3, 1]
+~~~
 
 ###$size
-* `<number> $size()` / `<number> $count()` - 计算元素数量
+* `<number> $size()` - 计算元素数量
+
+示例代码1：
+~~~javascript
+[1, 2, 3].$size(); // => 3
+~~~
+
+###$count
+同`$size()`作用一致。
 
 ###$asJSON
 * `<json> $asJSON(field)` - 取得当前数组转换为JSON格式的字符串
 
-###辅助
+示例代码1：
+~~~javascript
+[1, 2, 3].$asJSON(); // => "[1,2,3]"
+~~~
+
+###$copy
 * `<array> $copy()` - 拷贝数组
+
+示例代码1：
+~~~javascript
+var arr = [1, 2, 3].$copy(); // arr => [1, 2, 3]
+~~~
+
+###$range
 * `<array> Array.$range(start, end, step)` - 从一个限定的范围数字或字符生成一个数组
+
+示例代码1：
+~~~javascript
+var arr = Array.$range(1, 5); // arr => [1, 2, 3, 4, 5]
+~~~
+
+示例代码2：
+~~~javascript
+var arr = Array.$range(1, 5, 2); // arr => [1, 3, 5]
+~~~
+
+###$isArray
 * `<boolean> Array.$isArray(obj)` - 判断一个对象是否为数组
+
+示例代码1：
+~~~javascript
+Array.$isArray([1, 2, 3]); // => true
+Array.$isArray({ "name": "Libai" }); // => false
+~~~
+

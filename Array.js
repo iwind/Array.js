@@ -342,7 +342,7 @@ Array.prototype.$findAll = function (fn) {
 		return [];
 	}
 	if (typeof(fn) == "undefined") {
-		return that.copy();
+		return that.$copy();
 	}
 	var result = [];
 	that.$each(function (k, v) {
