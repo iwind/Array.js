@@ -16,6 +16,9 @@ arr.$each(function (k, v) {
 ~~~
 
 ##API
+
+**注意** OSC的文档解析有问题，看示例时需要直接拉到当前网页的下方。
+
 ###增
 * `<boolean> $pad(value, size)` - 填充数组 [\[示例\]](#pad)
 * `<boolean> $fill(value, length)` - 填充数组到一定长度 [\[示例\]](#fill)
