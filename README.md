@@ -31,10 +31,10 @@ arr.$each(function (k, v) {
 * `<boolean> $remove(index)` - 从数组中删除某个位置上的值 [\[示例\]](#remove)
 * `<number> $removeIf(fn)` - 删除所有满足条件的元素 [\[示例\]](#removeif)
 * `<number> $keepIf(fn)` - 保留所有满足条件的元素，删除不满足条件的元素 [\[示例\]](#keepif)
-* `<boolean> $replace(newValues)` - 将当前数组的元素替换成新的数组中的元素 [\[示例\]](#replace)
 * `<boolean> $clear()` - 清空数组 [\[示例\]](#clear)
 
 ###改
+* `<boolean> $replace(newValues)` - 将当前数组的元素替换成新的数组中的元素 [\[示例\]](#replace)
 * `<boolean> $unique(fn)` - 去除数组中的相同数据 [\[示例\]](#unique)
 * `<boolean> $set(index, value)` - 设置某个索引位置上的值 [\[示例\]](#set)
 * `<boolean> $sort(compare)` - 对该数组进行正排序 [\[示例\]](#sort)
@@ -71,6 +71,8 @@ arr.$each(function (k, v) {
 * `<number> $product(fn)` - 计算数组中的所有元素的乘积 [\[示例\]](#product)
 * `<array> $rand(size)` - 随机截取数组片段 [\[示例\]](#rand)
 * `<number> $size()` / `<number> $count()` - 计算元素数量 [\[示例\]](#size)
+* `<array> $chunk(size = 1)` - 返回数组分成新多个片段的结果 [\[示例\]](#chunk)
+* `<array> $combine(array1, ...)` - 返回数组分成新多个片段的结果 [\[示例\]](#combine)
 * `<boolean> $equal(array2)` - 判断两个数组是否以同样的顺序包含同样的元素 [\[示例\]](#equal)
 * `<json> $asJSON(field)` - 取得当前数组转换为JSON格式的字符串 [\[示例\]](#asjson)
 
@@ -225,6 +227,15 @@ arr.$keepIf(function (k, v) {
 // arr => [3, 4, 5]
 ~~~
 
+###$clear
+* `<boolean> $clear()` - 清空数组
+
+示例代码1：
+~~~javascript
+var arr = [1, 2, 3];
+arr.$clear(); // arr => []
+~~~
+
 ###$replace
 * `<boolean> $replace(newValues)` - 将当前数组的元素替换成新的数组中的元素
 
@@ -234,15 +245,6 @@ var arr = [ 1, 2, 3, 4, 5];
 arr.$replace(); // arr => [1, 2, 3, 4, 5]
 arr.$replace([]); // arr => []
 arr.$replace(["a", "b", "c"]); // arr => ["a", "b", "c"]
-~~~
-
-###$clear
-* `<boolean> $clear()` - 清空数组
-
-示例代码1：
-~~~javascript
-var arr = [1, 2, 3];
-arr.$clear(); // arr => []
 ~~~
 
 ###$unique
@@ -688,6 +690,33 @@ newArr = arr.$rand(2); // arr不变，newArr => [3, 1]
 ###$count
 同`$size()`作用一致。
 
+###$chunk
+* `<array> $chunk(size = 1)` - 返回数组分成新多个片段的结果，并不影像原来的数组
+
+示例代码1：
+~~~javascript
+[1, 2, 3, 4, 5].$chunk(); // => [[1], [2], [3], [4], [5]]
+[1, 2, 3, 4, 5].$chunk(1); // => [[1], [2], [3], [4], [5]]
+[1, 2, 3, 4, 5].$chunk(2); // => [[1, 2], [3, 4], [5]]
+[1, 2, 3, 4, 5].$chunk(3); // => [[1, 2, 3], [4, 5]]
+[1, 2, 3, 4, 5].$chunk(5); // => [[1, 2, 3, 4, 5]]
+[1, 2, 3, 4, 5].$chunk(6); // => [[1, 2, 3, 4, 5]]
+~~~
+
+###$combine
+* `<array> $combine(array1, ...)` - 返回数组分成新多个片段的结果 
+
+示例代码1： 
+~~~javascript
+[1, 2, 3, 4, 5].$combine(["a", "b", "c", "d", "e"]); // => [[1, "a"], [2, "b"], [3, "c"], [4, "d"], [5, "e"]]
+[1, 2, 3, 4, 5].$combine(["a", "b", "c", "d", "e"], ["a1", "b1", "c1"]); // => [[1, "a", "a1"], [2, "b", "b1"], [3, "c", "c1"], [4, "d", null], [5, "e", null]]  这里如果取不到对应的值，则使用null代替
+~~~
+
+示例代码2：
+~~~javascript
+[1, 2, 3].$combine(["a", "b", "c"]).$combine([ "a1", "b1", "c1" ]); // => [[[1, "a"], "a1"], [[2, "b"], "b1"], [[3, "c"], "c1"]]
+~~~~
+
 ###$equal
 * `<boolean> $equal(array2)` - 判断两个数组是否以同样的顺序包含同样的元素
 
@@ -695,6 +724,7 @@ newArr = arr.$rand(2); // arr不变，newArr => [3, 1]
 ~~~javascript
 [1, 2, 3].$equal(); // =>  false
 [1, 2, 3].$equal([1, 2, 3]); // => true
+[1, 2, 3].$equal([1, "2", 3]); // => true
 [1, 2, 3].$equal([1, 2, 3, 4]); // => false
 ~~~
 

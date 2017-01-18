@@ -36,6 +36,8 @@
  * - $swap(index1, index2)
  * - $sum(fn)
  * - $product(fn)
+ * - $chunk(size)
+ * - $combine(array1, ...)
  * - $pad(value, size)
  * - $fill(value, length)
  * - $shuffle()
@@ -727,6 +729,49 @@ Array.prototype.$product = function (fn) {
 			}
 		}
 	});
+	return result;
+};
+
+/**
+ * 返回数组分成新多个片段的结果
+ */
+Array.prototype.$chunk = function (size) {
+	var that = this;
+	if (that == null) {
+		return [];
+	}
+	if (typeof(size) == "undefined") {
+		size = 1;
+	}
+	size = parseInt(size);
+	if (isNaN(size) || size < 1) {
+		return [];
+	}
+	var result = [];
+	for (var i = 0; i < that.length / size; i ++) {
+		result.$push(that.slice(i * size, (i + 1) * size));
+	}
+	return result;
+};
+
+/**
+ * 取得当前数组和其他数组组合之后的结果
+ */
+Array.prototype.$combine = function (array1) {
+	var that = this;
+	if (that == null) {
+		return [];
+	}
+
+	var result = that.$chunk(1);
+	for (var i = 0; i < arguments.length; i ++) {
+		var arr = arguments[i];
+		if (Array.$isArray(arr)) {
+			for (var j = 0; j < that.length; j ++) {
+				result[j].$push(arr.$get(j));
+			}
+		}
+	}
 	return result;
 };
 
