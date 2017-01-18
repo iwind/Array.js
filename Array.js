@@ -46,6 +46,7 @@
  * - $insert(index, obj1, ...)
  * - $asc(field)
  * - $desc(field)
+ * - $equal(array2)
  * - $asJSON(field)
  * - Array.$range(start, end, step)
  * - Array.$isArray(obj)
@@ -945,6 +946,29 @@ Array.prototype.$desc = function (field) {
 		}
 		return 0;
 	});
+};
+
+/**
+ * 判断两个数组是否以同样的顺序包含同样的元素
+ */
+Array.prototype.$equal = function (array2) {
+	var that = this;
+	if (that == null) {
+		return false;
+	}
+	if (!Array.$isArray(array2)) {
+		return false;
+	}
+	if (that.length != array2.length) {
+		return false;
+	}
+
+	for (var i = 0; i < that.length; i ++) {
+		if (that[i] != array2[i]) {
+			return false;
+		}
+	}
+	return true;
 };
 
 /**

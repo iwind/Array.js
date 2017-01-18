@@ -71,6 +71,7 @@ arr.$each(function (k, v) {
 * `<number> $product(fn)` - 计算数组中的所有元素的乘积 [\[示例\]](#product)
 * `<array> $rand(size)` - 随机截取数组片段 [\[示例\]](#rand)
 * `<number> $size()` / `<number> $count()` - 计算元素数量 [\[示例\]](#size)
+* `<boolean> $equal(array2)` - 判断两个数组是否以同样的顺序包含同样的元素 [\[示例\]](#equal)
 * `<json> $asJSON(field)` - 取得当前数组转换为JSON格式的字符串 [\[示例\]](#asjson)
 
 ###辅助
@@ -636,6 +637,15 @@ newArr = arr.$getAll(0, 2, [3, 4]); // newArr => [1, 3, 4, 5]
 [1, 2, 3, 4].$sum(); // => 10 
 ~~~
 
+示例代码2：
+~~~javascript
+[1, 2, 3].$sum(function (k, v) {
+	return v * v;
+});
+// => 14 
+// 相当于：(1 * 1) + (2 * 2) + (3 * 3) = 14
+~~~
+
 ###$product
 * `<number> $product(fn)` - 计算数组中的所有元素的乘积
 
@@ -644,6 +654,15 @@ newArr = arr.$getAll(0, 2, [3, 4]); // newArr => [1, 3, 4, 5]
 [1, 2, 3].$product(); // => 6
 [1, 2, 3, 4].$product(); // => 24
 [1, 2, 3, 4, 5].$product(); // => 120
+~~~
+
+示例代码2：
+~~~javascript
+[1, 2, 3].$product(function (k, v) {
+	return v + v;
+});
+// => 48
+// 相当于 (1 + 1) * (2 + 2) * (3 + 3) = 48
 ~~~
 
 ###$rand
@@ -668,6 +687,16 @@ newArr = arr.$rand(2); // arr不变，newArr => [3, 1]
 
 ###$count
 同`$size()`作用一致。
+
+###$equal
+* `<boolean> $equal(array2)` - 判断两个数组是否以同样的顺序包含同样的元素
+
+示例代码1：
+~~~javascript
+[1, 2, 3].$equal(); // =>  false
+[1, 2, 3].$equal([1, 2, 3]); // => true
+[1, 2, 3].$equal([1, 2, 3, 4]); // => false
+~~~
 
 ###$asJSON
 * `<json> $asJSON(field)` - 取得当前数组转换为JSON格式的字符串
@@ -707,3 +736,5 @@ Array.$isArray([1, 2, 3]); // => true
 Array.$isArray({ "name": "Libai" }); // => false
 ~~~
 
+##在线测试
+[https://jsfiddle.net/liuxiangchao/j710t34j/3/](https://jsfiddle.net/liuxiangchao/j710t34j/3/)
