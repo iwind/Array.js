@@ -4,16 +4,20 @@
 ##使用
 直接引入 *Array.js* 或 *Array.min.js*：
 ~~~html
-<script type="text/javascript" src="Array.min.js"></script> 
+<script type="text/javascript" src="http://liuxiangchao.oss-cn-shanghai.aliyuncs.com/Array.min.js?v=0.0.1"></script> 
 ~~~
 
-然后：
+然后在Javascript中使用：
 ~~~javascript
 var arr = [ 1, 2, 3, 4];
 arr.$each(function (k, v) {
 	console.log(v);
 });
 ~~~
+其中`$each()`就是`Array.js`中定义的方法。
+
+###CDN地址
+可以直接引入`http://liuxiangchao.oss-cn-shanghai.aliyuncs.com/Array.min.js?v=0.0.1`来使用`Array.js`。
 
 ##API
 
@@ -254,6 +258,17 @@ arr.$replace(["a", "b", "c"]); // arr => ["a", "b", "c"]
 ~~~javascript
 var arr = [1, 2, 2, 3, 3, 3];
 arr.$unique(); // arr => [1, 2, 3]
+~~~
+
+示例代码2：
+~~~javascript
+var arr = [1, 1, 2, 2, 3, 3, 4, 4];
+arr.$unique(function (k, v) {
+	if (v >= 3) return 3;
+	if (v <= 2) return 2;
+});
+// 此时要比较的值变成[2, 2, 2, 2, 3, 3, 3, 3]
+// arr => [1, 3]
 ~~~
 
 ###$set
@@ -725,6 +740,7 @@ newArr = arr.$rand(2); // arr不变，newArr => [3, 1]
 [1, 2, 3].$equal(); // =>  false
 [1, 2, 3].$equal([1, 2, 3]); // => true
 [1, 2, 3].$equal([1, "2", 3]); // => true
+[1, 2, 3].$equal([2, 1, 3]); // => false 因为顺序不同
 [1, 2, 3].$equal([1, 2, 3, 4]); // => false
 ~~~
 
@@ -767,4 +783,4 @@ Array.$isArray({ "name": "Libai" }); // => false
 ~~~
 
 ##在线测试
-[https://jsfiddle.net/liuxiangchao/j710t34j/3/](https://jsfiddle.net/liuxiangchao/j710t34j/3/)
+[https://jsfiddle.net/liuxiangchao/j710t34j/6/](https://jsfiddle.net/liuxiangchao/j710t34j/3/)
