@@ -49,6 +49,7 @@
  * - $asc(field)
  * - $desc(field)
  * - $equal(array2)
+ * - $loop(fn)
  * - $asJSON(field)
  * - Array.$range(start, end, step)
  * - Array.$isArray(obj)
@@ -1013,6 +1014,39 @@ Array.prototype.$equal = function (array2) {
 			return false;
 		}
 	}
+	return true;
+};
+
+/**
+ * 循环使用当前数组的元素来调用某个函数
+ */
+Array.prototype.$loop = function (fn) {
+	var that = this;
+	if (that == null) {
+		return false;
+	}
+	if (that.length == 0) {
+		return false;
+	}
+
+	fn.call(that, 0, that[0], {
+		"index": 0,
+		"next": function () {
+			this.index ++;
+			if (this.index > that.length - 1) {
+				this.index = 0;
+			}
+			fn.call(that, this.index, that[this.index], this);
+			return this.index;
+		},
+		"sleep": function (ms) {
+			var that = this;
+			setTimeout(function () {
+				that.next();
+			}, ms);
+		}
+	});
+
 	return true;
 };
 

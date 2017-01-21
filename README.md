@@ -78,6 +78,7 @@ arr.$each(function (k, v) {
 * `<array> $chunk(size = 1)` - 返回数组分成新多个片段的结果 [\[示例\]](#chunk)
 * `<array> $combine(array1, ...)` - 返回数组分成新多个片段的结果 [\[示例\]](#combine)
 * `<boolean> $equal(array2)` - 判断两个数组是否以同样的顺序包含同样的元素 [\[示例\]](#equal)
+* `<boolean> $loop(fn)` - 循环使用当前数组的元素来调用某个函数 [\[示例\]](#loop)
 * `<json> $asJSON(field)` - 取得当前数组转换为JSON格式的字符串 [\[示例\]](#asjson)
 
 ###辅助
@@ -706,7 +707,7 @@ newArr = arr.$rand(2); // arr不变，newArr => [3, 1]
 同`$size()`作用一致。
 
 ###$chunk
-* `<array> $chunk(size = 1)` - 返回数组分成新多个片段的结果，并不影像原来的数组
+* `<array> $chunk(size = 1)` - 返回数组分成新多个片段的结果，并不影响原来的数组
 
 示例代码1：
 ~~~javascript
@@ -742,6 +743,49 @@ newArr = arr.$rand(2); // arr不变，newArr => [3, 1]
 [1, 2, 3].$equal([1, "2", 3]); // => true
 [1, 2, 3].$equal([2, 1, 3]); // => false 因为顺序不同
 [1, 2, 3].$equal([1, 2, 3, 4]); // => false
+~~~
+
+###$loop
+* `<boolean> $loop(fn)` - 循环使用当前数组的元素来调用某个函数
+ 
+`fn`接收三个参数：
+* `k` - 当前元素的索引
+* `v` - 当前元素的值
+* `loop` - 循环管理器
+
+在`fn`中调用`loop.next()`来进入下一个循环，如果没有调用`next()`，则`fn`最多只会调用一次：
+~~~javascript
+var index = loop.next();
+~~~
+
+示例代码1（每秒钟打印一次）：
+~~~javascript
+[1, 2, 3, 4, 5].$loop(function (k, v, loop) {
+	console.log("index:" + k + " " + v + "  -----  " + (new Date()));
+	
+	setTimeout(function () {
+		// 进入下一个循环
+		loop.next();
+	}, 1000);
+});
+~~~
+
+
+在`fn`中调用`loop.sleep(ms)`来延时`ms`时间后才进入下一个循环，示例代码2：
+~~~javascript
+[1, 2, 3, 4, 5].$loop(function (k, v, loop) {
+	console.log("index:" + k + " " + v + "  -----  " + (new Date()));
+	loop.sleep(2000);
+});
+~~~
+
+示例代码3（时钟）：
+~~~javascript
+[1, 2, 3, 4, 5].$loop(function (k, v, loop) {
+	var date = new Date();
+	document.body.innerHTML = date.getHours().toString() + ":" + date.getMinutes() + ":" + date.getSeconds();	
+	loop.sleep(1000);
+});
 ~~~
 
 ###$asJSON
