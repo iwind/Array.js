@@ -76,7 +76,7 @@ arr.$each(function (k, v) {
 * `<array> $rand(size)` - 随机截取数组片段 [\[示例\]](#rand)
 * `<number> $size()` / `<number> $count()` - 计算元素数量 [\[示例\]](#size)
 * `<array> $chunk(size = 1)` - 返回数组分成新多个片段的结果 [\[示例\]](#chunk)
-* `<array> $combine(array1, ...)` - 返回数组分成新多个片段的结果 [\[示例\]](#combine)
+* `<array> $combine(array1, ...)` - 取得当前数组和其他数组组合之后的结果 [\[示例\]](#combine)
 * `<boolean> $equal(array2)` - 判断两个数组是否以同样的顺序包含同样的元素 [\[示例\]](#equal)
 * `<boolean> $loop(fn)` - 循环使用当前数组的元素来调用某个函数 [\[示例\]](#loop)
 * `<json> $asJSON(field)` - 取得当前数组转换为JSON格式的字符串 [\[示例\]](#asjson)
@@ -618,7 +618,7 @@ newArr = arr.$getAll(0, 2, [3, 4]); // newArr => [1, 3, 4, 5]
 * `<mixed> $max(compare)` - 取得当前集合中最大的一个值
 
 示例代码1：
-~~~
+~~~javascript
 [1, 2, 3].$max(); // => 3
 ~~~
 
@@ -720,7 +720,7 @@ newArr = arr.$rand(2); // arr不变，newArr => [3, 1]
 ~~~
 
 ###$combine
-* `<array> $combine(array1, ...)` - 返回数组分成新多个片段的结果 
+* `<array> $combine(array1, ...)` - 取得当前数组和其他数组组合之后的结果 
 
 示例代码1： 
 ~~~javascript
