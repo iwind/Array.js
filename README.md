@@ -33,6 +33,7 @@ arr.$each(function (k, v) {
 ### 删
 * `<boolean> $removeValue(v)` - 从数组中删除某个值 [\[示例\]](#removevalue)
 * `<boolean> $remove(index)` - 从数组中删除某个位置上的值 [\[示例\]](#remove)
+* `<array> $drop(count)` - 删除后几个元素，并返回删除后的元素集合 [\[示例\]](#drop)
 * `<number> $removeIf(fn)` - 删除所有满足条件的元素 [\[示例\]](#removeif)
 * `<number> $keepIf(fn)` - 保留所有满足条件的元素，删除不满足条件的元素 [\[示例\]](#keepif)
 * `<boolean> $clear()` - 清空数组 [\[示例\]](#clear)
@@ -63,7 +64,8 @@ arr.$each(function (k, v) {
 * `<array> $map(fn)` / `$collect(fn)` - 对容器中元素应用迭代器,并将每次执行的结果放入一新数组中 [\[示例\]](#map)
 * `<mixed> $reduce(fn)` - 对容器中元素应用迭代器,并将每次执行的结果放入到下一次迭代的参数中 [\[示例\]](#reduce)
 * `<mixed> $find(fn)` - 对容器中元素应用迭代器,只要有一次返回值即立即返回由当前元素 [\[示例\]](#find)
-* `<array> $findAll(fn)` / `<array> $filter(fn)` - 对容器中元素应用迭代器,将所有返回真的元素放入一数组中 [\[示例\]](#findall)
+* `<array> $findAll(fn)` / `<array> $filter(fn)` - 对容器中元素应用迭代器，将所有返回真的元素放入一数组中 [\[示例\]](#findall)
+* `<array> $exist(fn)` - 对容器中元素应用迭代器，并判断是否存在返回真的元素 [\[示例\]](#exist)
 * `<array> $reject(fn)` - 对容器中元素应用迭代器,将所有返回假的元素放入一数组中 [\[示例\]](#reject)
 * `<array> $grep(pattern)` - 找出匹配某正则表达式的元素，并放入一数组中 [\[示例\]](#grep)
 * `<array> $keys(value, strict)` / `<array> $indexesOf(value, strict)` - 取得某一个值在数组中出现的所有的键的集合 [\[示例\]](#indexesof)
@@ -197,6 +199,23 @@ arr.$remove(2); // arr => [1, 2, 4, 5]
 ~~~javascript
 var arr = [1, 2, 3, 4, 5];
 arr.$remove(-2); // arr => [1, 2, 3, 5]
+~~~
+
+### $drop
+* `<array> $drop(count)` - 删除后几个元素，并返回删除后的元素集合
+
+示例代码1：
+~~~javascript
+var arr = [1, 2, 3, 4, 5];
+arr.$drop(1); // arr => [1, 2, 3, 4]
+arr.$drop(1); // arr => [1, 2, 3]
+arr.$drop(1); // arr => [1, 2]
+~~~
+
+示例代码2：
+~~~javascript
+var arr = [1, 2, 3, 4, 5];
+var dropped = arr.$drop(3); // arr => [1, 2] dropped => [3, 4, 5]
 ~~~
 
 ### $removeIf
@@ -576,6 +595,22 @@ newArr = arr.$getAll(0, 2, [3, 4]); // newArr => [1, 3, 4, 5]
 
 ### $filter
 `<array> $filter(fn)` - 同`$findAll(fn)`作用一致
+
+### $exist
+* `<array> $exist(fn)` - 对容器中元素应用迭代器，并判断是否存在返回真的元素
+
+示例代码1：
+~~~javascript
+[1, 2, 3].$exist(function (k, v) {
+	return (v > 4);
+});
+// => false
+
+[1, 2, 3].$exist(function (k, v) {
+	return (v == 3);
+});
+// => true
+~~~
 
 ### $reject
 * `<array> $reject(fn)` - 对容器中元素应用迭代器,将所有返回假的元素放入一数组中

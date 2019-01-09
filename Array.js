@@ -1,10 +1,11 @@
 /**
- * Array.js - v0.0.2
+ * Array.js - v0.0.3
  *
  * - $contains(v) / $include(v)
  * - $removeValue(v)
  * - $remove(index)
  * - $removeIf(fn)
+ * - $drop(n)
  * - $keepIf(fn)
  * - $replace(newValues)
  * - $clear()
@@ -23,6 +24,7 @@
  * - $reduce(fn)
  * - $find(fn)
  * - $findAll(fn) / $filter(fn)
+ * - $exist(fn)
  * - $reject(fn)
  * - $grep(pattern)
  * - $keys(value, strict) / $indexesOf(value, strict)
@@ -133,6 +135,20 @@ Array.prototype.$removeIf = function (fn) {
 	var left = that.$reject(fn);
 	that.$replace(left);
 	return oldLength - that.length;
+};
+
+/**
+ * 删除后几个元素，并返回删除后的元素集合
+ */
+Array.prototype.$drop = function (n) {
+	n = parseInt(n, 10);
+	if (isNaN(n) || n <= 0) {
+		return [];
+	}
+	if (n > this.length) {
+		n = this.length;
+	}
+	return this.splice(this.length - n, n);
 };
 
 /**
@@ -446,6 +462,13 @@ Array.prototype.$filter = function (fn) {
 		return [];
 	}
 	return that.$findAll(fn);
+};
+
+/**
+ * 对容器中元素应用迭代器，判断返回true的元素是否存在
+ */
+Array.prototype.$exist = function (fn) {
+	return this.$findAll(fn).length > 0;
 };
 
 /**
@@ -863,7 +886,10 @@ Array.prototype.$rand = function (size) {
 /**
  * 计算元素数量
  */
-Array.prototype.$size = function () {
+Array.prototype.$size = function (fn) {
+	if (typeof fn == "function") {
+		return this.$findAll(fn).length;
+	}
 	var that = this;
 	if (that == null) {
 		return 0;
@@ -874,12 +900,8 @@ Array.prototype.$size = function () {
 /**
  * 同$size()
  */
-Array.prototype.$count = function () {
-	var that = this;
-	if (that == null) {
-		return 0;
-	}
-	return that.length;
+Array.prototype.$count = function (fn) {
+	return this.$size(fn);
 };
 
 /**
