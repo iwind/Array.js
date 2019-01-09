@@ -16,12 +16,7 @@ arr.$each(function (k, v) {
 ~~~
 其中`$each()`就是`Array.js`中定义的方法。
 
-### CDN地址
-可以直接引入`http://liuxiangchao.oss-cn-shanghai.aliyuncs.com/Array.min.js?v=0.0.1`来使用`Array.js`。
-
 ## API
-
-**注意** OSC的文档解析有问题，看示例时需要直接拉到当前网页的下方。
 
 ### 增
 * `<boolean> $pad(value, size)` - 填充数组 [\[示例\]](#pad)
