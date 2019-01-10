@@ -71,7 +71,7 @@ arr.$each(function (k, v) {
 * `<number> $sum(fn)` - 计算数组中的所有元素的总和 [\[示例\]](#sum)
 * `<number> $product(fn)` - 计算数组中的所有元素的乘积 [\[示例\]](#product)
 * `<array> $rand(size)` - 随机截取数组片段 [\[示例\]](#rand)
-* `<number> $size()` / `<number> $count()` - 计算元素数量 [\[示例\]](#size)
+* `<number> $size(fn)` / `<number> $count(fn)` - 计算元素数量 [\[示例\]](#size)
 * `<array> $chunk(size = 1)` - 返回数组分成新多个片段的结果 [\[示例\]](#chunk)
 * `<array> $combine(array1, ...)` - 取得当前数组和其他数组组合之后的结果 [\[示例\]](#combine)
 * `<boolean> $equal(array2)` - 判断两个数组是否以同样的顺序包含同样的元素 [\[示例\]](#equal)
@@ -742,10 +742,13 @@ newArr = arr.$rand(2); // arr不变，newArr => [3, 1]
 示例代码1：
 ~~~javascript
 [1, 2, 3].$size(); // => 3
+[1, 2, 3].$size(function (k, v) {
+	return v >= 2;
+}); // => 2
 ~~~
 
 ### $count
-同`$size()`作用一致。
+同`$size(fn)`作用一致。
 
 ### $chunk
 * `<array> $chunk(size = 1)` - 返回数组分成新多个片段的结果，并不影响原来的数组
