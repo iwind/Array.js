@@ -4,7 +4,7 @@
 ## 使用
 直接引入 *Array.js* 或 *Array.min.js*：
 ~~~html
-<script type="text/javascript" src="http://liuxiangchao.oss-cn-shanghai.aliyuncs.com/Array.min.js?v=0.0.1"></script> 
+<script type="text/javascript" src="Array.min.js?v=0.0.3"></script> 
 ~~~
 
 然后在Javascript中使用：
